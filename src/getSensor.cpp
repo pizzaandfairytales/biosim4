@@ -59,7 +59,7 @@ float getTribalDensityAlongAxis(Coord loc, Dir dir, Gene tribeGene)
     // An empty neighborhood results in a sensor value exactly midrange; below
     // midrange if the population density is greatest in the reverse direction,
     // above midrange if density is greatest in forward direction.
-    extern bool genesMatch(const Gene &g1, const Gene &g2); 
+    extern bool weightsMatch(const Gene &g1, const Gene &g2); 
     assert(dir != Compass::CENTER);  // require a defined axis
 
     double sum = 0.0;
@@ -69,7 +69,7 @@ float getTribalDensityAlongAxis(Coord loc, Dir dir, Gene tribeGene)
     double dirVecY = dirVec.y / len; // Unit vector components along dir
 
     auto f = [&](Coord tloc) {
-        if (tloc != loc && grid.isOccupiedAt(tloc) && genesMatch(tribeGene, peeps[grid.at(tloc)].genome[0])) {
+        if (tloc != loc && grid.isOccupiedAt(tloc) && weightsMatch(tribeGene, peeps[grid.at(tloc)].genome[0])) {
             Coord offset = tloc - loc;
             double proj = dirVecX * offset.x + dirVecY * offset.y; // Magnitude of projection along dir
             double contrib = proj / (offset.x * offset.x + offset.y * offset.y);
@@ -237,7 +237,7 @@ unsigned longProbeBarrierFwd(Coord loc, Dir dir, unsigned longProbeDist)
 // Returned sensor values range SENSOR_MIN..SENSOR_MAX
 float Indiv::getSensor(Sensor sensorNum, unsigned simStep) const
 {
-    extern bool genesMatch(const Gene &g1, const Gene &g2);
+    extern bool weightsMatch(const Gene &g1, const Gene &g2);
     float sensorVal = 0.0;
 
     switch (sensorNum) {
@@ -404,7 +404,7 @@ float Indiv::getSensor(Sensor sensorNum, unsigned simStep) const
 
         auto tribeMatch = [&](Coord tloc) {
             ++countLocs;
-            if (grid.isOccupiedAt(tloc) && genesMatch(genome[0], peeps[grid.at(tloc)].genome[0])) {
+            if (grid.isOccupiedAt(tloc) && weightsMatch(genome[0], peeps[grid.at(tloc)].genome[0])) {
                 ++countOccupied;
             }
         };
