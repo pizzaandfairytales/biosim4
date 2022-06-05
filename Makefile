@@ -11,7 +11,7 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -I/usr/include/opencv4
+INC = -I/usr/include/opencv4 -I./
 CFLAGS = -Wall -fexceptions -fopenmp
 RESINC = 
 LIBDIR = 
