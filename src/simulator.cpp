@@ -32,6 +32,8 @@ Signals signals;  // A 2D array of pheromones that overlay the world grid
 Peeps peeps;      // The container of all the individuals in the population
 ImageWriter imageWriter; // This is for generating the movies
 signed tribeWinner; // this tracks the winning side
+std::vector<unsigned> tribePopulations; // this tracks the survivor counts of each tribe
+unsigned survivors; // total number of alive individuals after generation
 
 // The paramManager maintains a private copy of the parameter values, and a copy
 // is available read-only through global variable p. Although this is not
@@ -123,6 +125,12 @@ void simulator(int argc, char **argv)
     signals.init(p.signalLayers, p.sizeX, p.sizeY);  // where the pheromones waft
     peeps.init(p.population); // the peeps themselves
     tribeWinner = 0;
+    survivors = 0;
+    if (p.numTribes > 0){
+        for (unsigned x = 0; x < p.numTribes; x++){
+            tribePopulations.push_back(0);   
+        }
+    }
     // If imageWriter is to be run in its own thread, start it here:
     //std::thread t(&ImageWriter::saveFrameThread, &imageWriter);
 

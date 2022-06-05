@@ -76,7 +76,7 @@ Genome makeRandomGenome()
     }
     // set control gene
     if (p.numTribes > 0){
-        int16_t tribe = randomUint(1, p.numTribes);
+        int16_t tribe = randomUint(0, p.numTribes - 1);
         genome[0] = MakeGene(0, 0, 1, 16, tribe);
     }
     return genome;
@@ -444,7 +444,7 @@ Genome generateChildGenome(const std::vector<Genome> &parentGenomes)
     
     // set control gene
     if (p.numTribes > 0){
-        int16_t tribe = randomUint(1, p.numTribes);
+        int16_t tribe = randomUint(0, p.numTribes - 1);
         genome[0] = MakeGene(0, 0, 1, 16, tribe);
     }
     
