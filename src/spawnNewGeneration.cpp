@@ -80,7 +80,7 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
     // This container will hold the genomes of the survivors
     std::vector<Genome> parentGenomes;
     survivors = 0;
-    tribeWinner = 0;
+    topTribe = 0;
     if (p.numTribes > 0){
         for (unsigned x = 0; x < p.numTribes; x++){
             tribePopulations[x] = 0;   
@@ -92,6 +92,11 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
             }
         }
         //std::cout << "survivors: " << survivors << std::endl;
+        for (unsigned x = 0; x < p.numTribes; x++){
+            if (tribePopulations[x] > tribePopulations[topTribe]){
+                topTribe = x;   
+            }
+        }
     }
 
     if (p.challenge != CHALLENGE_ALTRUISM) {

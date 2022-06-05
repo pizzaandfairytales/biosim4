@@ -31,9 +31,9 @@ Grid grid;        // The 2D world where the creatures live
 Signals signals;  // A 2D array of pheromones that overlay the world grid
 Peeps peeps;      // The container of all the individuals in the population
 ImageWriter imageWriter; // This is for generating the movies
-signed tribeWinner; // this tracks the winning side
 std::vector<unsigned> tribePopulations; // this tracks the survivor counts of each tribe
 unsigned survivors; // total number of alive individuals after generation
+unsigned topTribe; // tribe with the most survivors at the end of generation
 
 // The paramManager maintains a private copy of the parameter values, and a copy
 // is available read-only through global variable p. Although this is not

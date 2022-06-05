@@ -44,9 +44,9 @@ extern Grid grid;  // 2D arena where the individuals live
 extern Signals signals;  // pheromone layers
 extern Peeps peeps;   // container of all the individuals
 extern void simulator(int argc, char **argv);
-extern signed tribeWinner; // tribe winner
 extern std::vector<unsigned> tribePopulations; // tribal populations
 extern unsigned survivors; // total number of survivors
+extern unsigned topTribe; // tribe with the most survivors
 
 // Feeds in-bounds Coords to a function: given a center location and a radius, this
 // function will call f(Coord) once for each location inside the specified area.

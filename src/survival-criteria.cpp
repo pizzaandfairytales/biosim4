@@ -345,7 +345,8 @@ std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned chal
                 //std::cout << "myPop: " << myPop << std::endl;
                 float reproduction = myPop/(survivors + 0.0);
                 //std::cout << "reproduction: " << reproduction << std::endl;
-                return std::pair<bool, float> {true, reproduction};
+                return indiv.genome[0].weight == topTribe ? std::pair<bool, float> {true, 1.0}
+                                                          : std::pair<bool, float> {false, 0,0};
             }
 
     default:
