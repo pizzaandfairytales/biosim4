@@ -15,6 +15,10 @@ bool genesMatch(const Gene &g1, const Gene &g2)
         && g1.sourceType == g2.sourceType
         && g1.weight == g2.weight;
 }
+    
+bool weightsMatch(const Gene &g1, const Gene &g2){
+    return g1.weight == g2.weight;   
+}
 
 
 // The jaro_winkler_distance() function is adapted from the C version at
