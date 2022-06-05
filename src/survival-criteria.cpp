@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include <utility>
+#include <iostream>
+#include <ostream>
 #include "simulator.h"
 
 namespace BS {
@@ -336,6 +338,14 @@ std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned chal
                   std::pair<bool, float> { true, (radius - distance) / radius }
                 : std::pair<bool, float> { false, 0.0 };
         }
+            
+        case CHALLENGE_GANG_WAR:
+            {
+                extern bool genesMatch(const Gene &g1, const Gene &g2); 
+                return (tribeWinner > 0) == genesMatch(indiv.genome[0], peeps[1].genome[0]) ? 
+                       std::pair<bool, float> {true, 1.0}
+                     : std::pair<bool, float> {false, 0.0};
+            }
 
     default:
         assert(false);

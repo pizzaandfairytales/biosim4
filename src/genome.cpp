@@ -51,6 +51,18 @@ Gene makeRandomGene()
 
     return gene;
 }
+    
+Gene MakeGene(uint16_t sourceType, uint16_t sourceNum, uint16_t sinkType, uint16_t sinkNum, int16_t weight){
+    Gene gene;
+    
+    gene.sourceType = sourceType;
+    gene.sourceNum = sourceNum;
+    gene.sinkType = sinkType;
+    gene.sinkNum = sinkNum;
+    gene.weight = weight;
+    
+    return gene;
+}
 
 
 // Returns by value a single genome with random genes.
@@ -62,7 +74,11 @@ Genome makeRandomGenome()
     for (unsigned n = 0; n < length; ++n) {
         genome.push_back(makeRandomGene());
     }
-
+    // set control gene
+    if (p.numTribes > 0){
+        int16_t tribe = randomUint(1, p.numTribes);
+        genome[0] = MakeGene(0, 0, 1, 16, tribe);
+    }
     return genome;
 }
 
@@ -76,20 +92,24 @@ void makeRenumberedConnectionList(ConnectionList &connectionList, const Genome &
 {
     connectionList.clear();
     for (auto const &gene : genome) {
-        connectionList.push_back(gene);
-        auto &conn = connectionList.back();
+        // don't use NOP action
+        if (!(gene.sinkType == ACTION && gene.sinkNum % Action:: NUM_ACTIONS == Action::NOP)){
+            connectionList.push_back(gene);
+            auto &conn = connectionList.back();
 
-        if (conn.sourceType == NEURON) {
-            conn.sourceNum %= p.maxNumberNeurons;
-        } else {
-            conn.sourceNum %= Sensor::NUM_SENSES;
-        }
+            if (conn.sourceType == NEURON) {
+                conn.sourceNum %= p.maxNumberNeurons;
+            } else {
+                conn.sourceNum %= Sensor::NUM_SENSES;
+            }
 
-        if (conn.sinkType == NEURON) {
-            conn.sinkNum %= p.maxNumberNeurons;
-        } else {
-            conn.sinkNum %= Action::NUM_ACTIONS;
+            if (conn.sinkType == NEURON) {
+                conn.sinkNum %= p.maxNumberNeurons;
+            } else {
+                conn.sinkNum %= Action::NUM_ACTIONS;
+            }
         }
+        
     }
 }
 
@@ -421,7 +441,13 @@ Genome generateChildGenome(const std::vector<Genome> &parentGenomes)
     applyPointMutations(genome);
     assert(!genome.empty());
     assert(genome.size() <= p.genomeMaxLength);
-
+    
+    // set control gene
+    if (p.numTribes > 0){
+        int16_t tribe = randomUint(1, p.numTribes);
+        genome[0] = MakeGene(0, 0, 1, 16, tribe);
+    }
+    
     return genome;
 }
 

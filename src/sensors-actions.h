@@ -55,6 +55,9 @@ enum Sensor {
     SIGNAL0,           // W strength of signal0 in neighborhood
     SIGNAL0_FWD,       // W strength of signal0 in the forward-reverse axis
     SIGNAL0_LR,        // W strength of signal0 in the left-right axis
+    TRIBE,
+    TRIBE_FWD,
+    TRIBE_LR,
     NUM_SENSES,        // <<------------------ END OF ACTIVE SENSES MARKER
 };
 
@@ -82,8 +85,9 @@ enum Action {
     MOVE_LEFT,                // W
     MOVE_RIGHT,               // W
     MOVE_REVERSE,             // W
-    NUM_ACTIONS,       // <<----------------- END OF ACTIVE ACTIONS MARKER
+    NOP,               // I gets culled, can be used for meta genes that we don't want to impact behavior
     KILL_FORWARD,             // W
+    NUM_ACTIONS,       // <<----------------- END OF ACTIVE ACTIONS MARKER
 };
 
 extern std::string sensorName(Sensor sensor);

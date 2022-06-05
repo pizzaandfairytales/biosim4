@@ -65,6 +65,7 @@ void ParamManager::setDefaults()
     privParams.RNGSeed = 12345678;
     privParams.graphLogUpdateCommand = "/usr/bin/gnuplot --persist ./tools/graphlog.gp";
     privParams.parameterChangeGenerationNumber = 0;
+    privParams.numTribes = 0;
 }
 
 
@@ -257,6 +258,9 @@ void ParamManager::ingestParameter(std::string name, std::string val)
         }
         else if (name == "rngseed" && isUint) {
             privParams.RNGSeed = uVal; break;
+        }
+        else if (name == "numtribes" && isUint) {
+            privParams.numTribes = uVal; break;   
         }
         else {
             std::cout << "Invalid param: " << name << " = " << val << std::endl;

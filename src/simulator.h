@@ -36,6 +36,7 @@ constexpr unsigned CHALLENGE_PAIRS = 15;
 constexpr unsigned CHALLENGE_LOCATION_SEQUENCE = 16;
 constexpr unsigned CHALLENGE_ALTRUISM = 17;
 constexpr unsigned CHALLENGE_ALTRUISM_SACRIFICE = 18;
+constexpr unsigned CHALLENGE_GANG_WAR = 19;
 
 extern ParamManager paramManager; // manages simulator params from the config file plus more
 extern const Params &p; // read-only simulator config params
@@ -43,6 +44,7 @@ extern Grid grid;  // 2D arena where the individuals live
 extern Signals signals;  // pheromone layers
 extern Peeps peeps;   // container of all the individuals
 extern void simulator(int argc, char **argv);
+extern signed tribeWinner; // tribe winner
 
 // Feeds in-bounds Coords to a function: given a center location and a radius, this
 // function will call f(Coord) once for each location inside the specified area.

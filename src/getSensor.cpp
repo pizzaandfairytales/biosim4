@@ -47,6 +47,47 @@ float getPopulationDensityAlongAxis(Coord loc, Dir dir)
 
     return sensorVal;
 }
+    
+float getTribalDensityAlongAxis(Coord loc, Dir dir, Gene tribeGene)
+{
+    // Converts the population along the specified axis to the sensor range. The
+    // locations of neighbors are scaled by the inverse of their distance times
+    // the positive absolute cosine of the difference of their angle and the
+    // specified axis. The maximum positive or negative magnitude of the sum is
+    // about 2*radius. We don't adjust for being close to a border, so populations
+    // along borders and in corners are commonly sparser than away from borders.
+    // An empty neighborhood results in a sensor value exactly midrange; below
+    // midrange if the population density is greatest in the reverse direction,
+    // above midrange if density is greatest in forward direction.
+    extern bool genesMatch(const Gene &g1, const Gene &g2); 
+    assert(dir != Compass::CENTER);  // require a defined axis
+
+    double sum = 0.0;
+    Coord dirVec = dir.asNormalizedCoord();
+    double len = std::sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
+    double dirVecX = dirVec.x / len;
+    double dirVecY = dirVec.y / len; // Unit vector components along dir
+
+    auto f = [&](Coord tloc) {
+        if (tloc != loc && grid.isOccupiedAt(tloc) && genesMatch(tribeGene, peeps[grid.at(tloc)].genome[0])) {
+            Coord offset = tloc - loc;
+            double proj = dirVecX * offset.x + dirVecY * offset.y; // Magnitude of projection along dir
+            double contrib = proj / (offset.x * offset.x + offset.y * offset.y);
+            sum += contrib;
+        }
+    };
+
+    visitNeighborhood(loc, p.populationSensorRadius, f);
+
+    double maxSumMag = 6.0 * p.populationSensorRadius;
+    assert(sum >= -maxSumMag && sum <= maxSumMag);
+
+    double sensorVal;
+    sensorVal = sum / maxSumMag; // convert to -1.0..1.0
+    sensorVal = (sensorVal + 1.0) / 2.0; // convert to 0.0..1.0
+
+    return sensorVal;
+}
 
 
 // Converts the number of locations (not including loc) to the next barrier location
@@ -196,6 +237,7 @@ unsigned longProbeBarrierFwd(Coord loc, Dir dir, unsigned longProbeDist)
 // Returned sensor values range SENSOR_MIN..SENSOR_MAX
 float Indiv::getSensor(Sensor sensorNum, unsigned simStep) const
 {
+    extern bool genesMatch(const Gene &g1, const Gene &g2);
     float sensorVal = 0.0;
 
     switch (sensorNum) {
@@ -354,6 +396,29 @@ float Indiv::getSensor(Sensor sensorNum, unsigned simStep) const
         }
         break;
     }
+    case Sensor::TRIBE:
+    {
+        unsigned countLocs = 0;
+        unsigned countOccupied = 0;
+        Coord center = loc;
+
+        auto tribeMatch = [&](Coord tloc) {
+            ++countLocs;
+            if (grid.isOccupiedAt(tloc) && genesMatch(genome[0], peeps[grid.at(tloc)].genome[0])) {
+                ++countOccupied;
+            }
+        };
+
+        visitNeighborhood(center, p.populationSensorRadius, tribeMatch);
+        sensorVal = (float)countOccupied / countLocs;
+        break;
+    }
+    case Sensor::TRIBE_FWD:
+        getTribalDensityAlongAxis(loc, lastMoveDir, genome[0]);
+        break;
+    case Sensor::TRIBE_LR:
+        getTribalDensityAlongAxis(loc, lastMoveDir.rotate90DegCW(), genome[0]);
+        break;
     default:
         assert(false);
         break;

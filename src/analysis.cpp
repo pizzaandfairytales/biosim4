@@ -35,6 +35,9 @@ std::string sensorName(Sensor sensor)
     case SIGNAL0_FWD: return "signal 0 fwd"; break;
     case SIGNAL0_LR: return "signal 0 LR"; break;
     case GENETIC_SIM_FWD: return "genetic similarity fwd"; break;
+    case TRIBE: return "tribe match neighborhood"; break;
+    case TRIBE_FWD: return "tribe match fwd"; break;
+    case TRIBE_LR: return "tribe match lr"; break;
     default: assert(false); break;
     }
 }
@@ -61,6 +64,7 @@ std::string actionName(Action action)
     case MOVE_RL: return "move R-L"; break;
     case MOVE_RANDOM: return "move random"; break;
     case SET_LONGPROBE_DIST: return "set longprobe dist"; break;
+    case NOP: return "nop"; break;
     default: assert(false); break;
     }
 }
@@ -92,6 +96,9 @@ std::string sensorShortName(Sensor sensor)
     case SIGNAL0_FWD: return "Sfd"; break;
     case SIGNAL0_LR: return "Slr"; break;
     case GENETIC_SIM_FWD: return "Gen"; break;
+        case TRIBE: return "Trb"; break;
+        case TRIBE_FWD: return "Trf"; break;
+        case TRIBE_LR: return "Tlr"; break;
     default: assert(false); break;
     }
 }
@@ -119,6 +126,7 @@ std::string actionShortName(Action action)
     case MOVE_RL: return "MRL"; break;
     case MOVE_RANDOM: return "Mrn"; break;
     case SET_LONGPROBE_DIST: return "LPD"; break;
+    case NOP: return "Nop"; break;
     default: assert(false); break;
     }
 }

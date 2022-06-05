@@ -31,6 +31,7 @@ Grid grid;        // The 2D world where the creatures live
 Signals signals;  // A 2D array of pheromones that overlay the world grid
 Peeps peeps;      // The container of all the individuals in the population
 ImageWriter imageWriter; // This is for generating the movies
+signed tribeWinner; // this tracks the winning side
 
 // The paramManager maintains a private copy of the parameter values, and a copy
 // is available read-only through global variable p. Although this is not
@@ -121,7 +122,7 @@ void simulator(int argc, char **argv)
     grid.init(p.sizeX, p.sizeY); // the land on which the peeps live
     signals.init(p.signalLayers, p.sizeX, p.sizeY);  // where the pheromones waft
     peeps.init(p.population); // the peeps themselves
-
+    tribeWinner = 0;
     // If imageWriter is to be run in its own thread, start it here:
     //std::thread t(&ImageWriter::saveFrameThread, &imageWriter);
 

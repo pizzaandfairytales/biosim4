@@ -71,6 +71,7 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
     extern void appendEpochLog(unsigned generation, unsigned numberSurvivors, unsigned murderCount);
     extern std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned challenge);
     extern void displaySignalUse();
+    extern bool genesMatch(const Gene &g1, const Gene &g2);
 
     // This container will hold the indexes and survival scores (0.0..1.0)
     // of all the survivors who will provide genomes for repopulation.
@@ -78,6 +79,20 @@ unsigned spawnNewGeneration(unsigned generation, unsigned murderCount)
 
     // This container will hold the genomes of the survivors
     std::vector<Genome> parentGenomes;
+    
+    tribeWinner = 0;
+    if (p.numTribes > 0){
+        for (unsigned x = 1; x <= p.population; x++){
+            if (peeps[x].alive){
+                if (genesMatch(peeps[x].genome[0], peeps[1].genome[0])){
+                    tribeWinner++;
+                } else {
+                    tribeWinner--;
+                }
+            }
+        }
+        //std::cout << "tribeWinner: " << tribeWinner << std::endl;
+    }
 
     if (p.challenge != CHALLENGE_ALTRUISM) {
         // First, make a list of all the individuals who will become parents; save
