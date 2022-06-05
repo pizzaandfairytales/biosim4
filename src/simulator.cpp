@@ -33,7 +33,7 @@ Peeps peeps;      // The container of all the individuals in the population
 ImageWriter imageWriter; // This is for generating the movies
 std::vector<unsigned> tribePopulations; // this tracks the survivor counts of each tribe
 unsigned survivors; // total number of alive individuals after generation
-unsigned topTribe; // tribe with the most survivors at the end of generation
+signed topTribe; // tribe with the most survivors at the end of generation
 
 // The paramManager maintains a private copy of the parameter values, and a copy
 // is available read-only through global variable p. Although this is not
@@ -124,7 +124,6 @@ void simulator(int argc, char **argv)
     grid.init(p.sizeX, p.sizeY); // the land on which the peeps live
     signals.init(p.signalLayers, p.sizeX, p.sizeY);  // where the pheromones waft
     peeps.init(p.population); // the peeps themselves
-    tribeWinner = 0;
     survivors = 0;
     if (p.numTribes > 0){
         for (unsigned x = 0; x < p.numTribes; x++){

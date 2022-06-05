@@ -341,12 +341,12 @@ std::pair<bool, float> passedSurvivalCriterion(const Indiv &indiv, unsigned chal
             
         case CHALLENGE_GANG_WAR:
             {
-                unsigned myPop = tribePopulations[indiv.genome[0].weight];
+                //unsigned myPop = tribePopulations[indiv.genome[0].weight];
                 //std::cout << "myPop: " << myPop << std::endl;
-                float reproduction = myPop/(survivors + 0.0);
+                //float reproduction = myPop/(survivors + 0.0);
                 //std::cout << "reproduction: " << reproduction << std::endl;
                 return indiv.genome[0].weight == topTribe ? std::pair<bool, float> {true, 1.0}
-                                                          : std::pair<bool, float> {false, 0,0};
+                                                          : std::pair<bool, float> {false, 0.0};
             }
 
     default:
